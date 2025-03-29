@@ -174,12 +174,8 @@
   - Generate: 使用 DeepSeek-v3 API 生成回答
 
 - **系统演示**：
-```html
-<video width="640" height="360" controls>
-  <source src="video/ragchatbot.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-```
+[▶️ 点击查看系统演示视频](video/ragchatbot.mp4)
+![系统演示](image/ragchatbot.gif)
 
 ## 文档预处理
 
