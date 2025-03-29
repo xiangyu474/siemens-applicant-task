@@ -1,11 +1,11 @@
 # 目录
 
-- [TASK 1: Customer Churn Prediction Model](#task-1customer-churn-prediction-model)
-- [TASK 2: Anomaly Detection System](#task2-anomaly-detection-system)
+- [TASK 1: Customer Churn Prediction Model](#task-1-customer-churn-prediction-model)
+- [TASK 2: Anomaly Detection System](#task-2-anomaly-detection-system)
 
 ---
 
-# TASK 1:Customer Churn Prediction Model
+# TASK 1: Customer Churn Prediction Model
 
 ## 1. 数据概览
 
@@ -94,7 +94,7 @@
 | `payment_delay_level` | Repeated Delay 表现为高风险 | 支付不规律是预警信号 |
 
 ---
-# Task2:Anomaly Detection System
+# TASK 2: Anomaly Detection System
 
 
 ## 技术实现思路
