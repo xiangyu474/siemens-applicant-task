@@ -31,8 +31,6 @@
 #### 支付延迟
 ![Bar: payment_delay vs Churn](image/payment_delay.png)
 
----
-
 ## 2. 特征工程
 
 **清洗处理**：
@@ -50,7 +48,6 @@
 | `balance_satisfaction` | 余额 × 满意度|
 | `monthly_spend` | 月交易次数 × 均值|
 
----
 ## 3.模型训练
 为确保模型具备稳定性和泛化能力，在训练过程中采用了以下策略：
 - 使用 GridSearchCV对每个模型进行系统性超参数调优；
@@ -78,7 +75,6 @@
 - Logistic Regression 的recall 表现最好，适合用于前置风险筛查；
 - 所有模型的ROC-AUC在0.67-0.71之间，对流失客户识别稳定，可辅助后续营销运营。
 
----
 
 ## 5. 特征重要性分析
 
