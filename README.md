@@ -2,6 +2,7 @@
 
 - [TASK 1: Customer Churn Prediction Model](#task-1-customer-churn-prediction-model)
 - [TASK 2: Anomaly Detection System](#task-2-anomaly-detection-system)
+- [TASK 3: RAG Chatbot](#task-3-rag-chatbot)
 
 ---
 
@@ -30,6 +31,13 @@
 ![Bar: Complaints vs Churn](image/complaint.png)
 #### 支付延迟
 ![Bar: payment_delay vs Churn](image/payment_delay.png)
+
+### PCA 客户分布
+
+![PCA](image/pca_visualization.png) 
+
+- 客户流失在降维空间中未形成明显聚类，说明流失行为并非由单一线性因素主导；
+- 主成分累计解释率仅为 27%，说明原始数据结构较复杂
 
 ## 2. 特征工程
 
@@ -64,16 +72,17 @@
 
 | Model               | Best Threshold | Precision | Recall | F1 Score | ROC-AUC |
 |--------------------|----------------|-----------|--------|----------|---------|
-| Random Forest       | 0.344          | 0.415     | 0.817  | 0.551    | 0.702   |
-| Logistic Regression | 0.202          | 0.378     | 0.850  | 0.523    | 0.676   |
-| XGBoost             | 0.502          | 0.434     | 0.767  | **0.554**| **0.709**|
-| LightGBM            | 0.484          | 0.412     | 0.783  | 0.540    | 0.696   |
+| Random Forest       | 0.315          | 0.403     | 0.878  | 0.552    | 0.706   |
+| Logistic Regression | 0.183          | 0.389     | **0.911**  | 0.545    | 0.696   |
+| XGBoost         | 0.497          | **0.481** | 0.722  | **0.578**| **0.722**|
+| LightGBM            | 0.453          | 0.447     | 0.789  | 0.570    | 0.710   |
 
 
 
 - XGBoost 综合性能最优，F1 Score 与 ROC-AUC 均领先，适合作为生产模型；
 - Logistic Regression 的recall 表现最好，适合用于前置风险筛查；
-- 所有模型的ROC-AUC在0.67-0.71之间，对流失客户识别稳定，可辅助后续营销运营。
+- Random Forest 在 Recall 上也很强（0.878），但 Precision 较低，可能带来更多误报；
+- 所有模型的ROC-AUC在0.69-0.73之间，对流失客户识别稳定，可辅助后续营销运营。
 
 
 ## 5. 特征重要性分析
@@ -153,3 +162,57 @@
 - [SHAP Explainability](https://shap.readthedocs.io/en/latest/)
 
 ---
+
+# TASK 3: RAG Chatbot
+
+- **前端界面**：使用 `Streamlit`构建，提供聊天 UI、侧边栏控件（控制查询扩展、重排序、索引管理）
+- **后端框架**：LangChain+Python
+- **RAG 处理流程**：
+  - Query Expand: DeepSeek-v3 API
+  - Retrieve: BM25 + 向量相似度
+  - Rerank: 使用 Cohere API 进行重排序
+  - Generate: 使用 DeepSeek-v3 API 生成回答
+
+- **画面展示**：
+<video width="640" height="360" controls>
+  <source src="video/ragchatbot.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+## 文档预处理
+
+- **原始格式**：PDF 格式的[技术手册](https://support.industry.siemens.com/cs/cn/zh/view/109767345)和[常见问题文档](https://www.ad.siemens.com.cn/productportal/prods/V90_Document/00_Selection/06_FAQ/SelectionFAQ.htm)
+- **转换工具**：使用 [LlamaParse](https://cloud.llamaindex.ai/project/9b763bc0-8014-43f7-9128-0f5be4d64ddf/pipeline) 将 PDF 转为结构化 Markdown 文件
+- **切块策略**：基于 Markdown 层级结构划分，使用 LangChain的`MarkdownHeaderTextSplitter`：
+  - `#` 为一级标题
+  - `##` 为二级标题
+  - 过滤掉仅包含标题或无实际内容的块
+
+
+## 向量索引与嵌入
+
+- **嵌入模型**：`BAAI/bge-small-zh-v1.5`，支持中文，运行于 CPU
+- **向量索引**：使用 `FAISS`本地构建和保存
+- **稀疏索引**：基于 `rank_bm25.BM25Okapi` 实现 BM25 检索器
+- **混合索引策略**：利用 LangChain 的 `EnsembleRetriever` 加权组合 BM25 与 FAISS 向量检索
+
+
+## 检索策略
+
+- **查询扩展**：启用后，使用 LLM 从用户提问中识别关键术语并生成相关术语组合查询，提升召回率
+- **文档检索流程**：
+  - 使用 BM25 与 FAISS 混合检索相关文档块
+  - 可选启用 Cohere Rerank API 对结果进行重排序
+  - 按文档相关性得分生成置信度评级（高 / 中 / 低）
+
+
+## 回答生成
+
+- **语言模型**：使用 DeepSeek-v3 API
+- **系统提示词模板**：引导 LLM 生成专业、准确、引用充分的回答
+- **上下文注入方式**：将 Top N 文档块（含引用和置信度）拼接后注入 prompt 中，辅助生成
+
+---
+
+
+
