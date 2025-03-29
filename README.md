@@ -175,6 +175,7 @@
 
 - **系统演示**：
 [▶️ 点击查看系统演示视频](video/ragchatbot.mp4)
+
 ![系统演示](image/ragchatbot.gif)
 
 ## 文档预处理
