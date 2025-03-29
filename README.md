@@ -173,7 +173,7 @@
   - Rerank: 使用 Cohere API 进行重排序
   - Generate: 使用 DeepSeek-v3 API 生成回答
 
-- **画面展示**：
+- **系统演示**：
 ```html
 <video width="640" height="360" controls>
   <source src="video/ragchatbot.mp4" type="video/mp4">
