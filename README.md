@@ -74,7 +74,7 @@
 
 
 
-- XGBoost 综合性能最优，F1 与 AUC 均领先，适合作为生产模型；
+- XGBoost 综合性能最优，F1 Score 与 ROC-AUC 均领先，适合作为生产模型；
 - Logistic Regression 的recall 表现最好，适合用于前置风险筛查；
 - 所有模型的ROC-AUC在0.67-0.71之间，对流失客户识别稳定，可辅助后续营销运营。
 
@@ -98,7 +98,7 @@
 | `payment_delay_level` | Repeated Delay 表现为高风险 | 支付不规律是预警信号 |
 
 ---
-# Task2 Anomaly Detection System
+# Task2:Anomaly Detection System
 
 
 ## 技术实现思路
@@ -119,14 +119,14 @@
 
 #### 半监督方法
 - **One-Class SVM**（学习正常样本的边界）
-- **AutoEncoder + 标注微调阈值**
+- **AutoEncoder + 利用标注数据微调检测阈值**
 - **模型集成策略**（多模型得分融合 + 异常标签调参）
 
 ### 3. 异常解释能力
 
 - **Isolation Forest** → 使用 SHAP 值分析特征贡献
 - **AutoEncoder** → 输出每个特征的重构误差
-- **LSTM-VAE + Attention** → 高权重的时间步/特征即为主要异常来源
+- **LSTM-VAE + Attention** → 注意力权重高的时间步或特征可用于识别主要异常来源
 
 
 ### 4. 阈值优化与评估
