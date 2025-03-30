@@ -145,7 +145,7 @@
 - Precision vs Recall平衡，控制误报率
 
 
-### 6. 相关工具与平台
+### 5. 相关工具与平台
 
 
 | 类型 | 工具 | 说明 |
@@ -220,9 +220,9 @@
 ---
 # TASK 4: Multimodal Sentiment Analysis System
 
-![flowchart](image/task4.png)
-
 ## 技术实现思路
+
+![flowchart](image/task4.png)
 
 ### 1. 文本情感分析模块
 - 可直接利用预训练的中文情感分析模型（如基于BERT/ERNIE的模型）或调用 GPT-4 等大模型的API进行情感判断。
