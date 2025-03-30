@@ -208,7 +208,7 @@
 - **查询扩展**：启用后，使用 LLM 从用户提问中识别关键术语并生成相关术语组合查询，提升召回率
 - **文档检索流程**：
   - 使用 BM25 与 FAISS 混合检索相关文档块
-  - 可启用 Cohere Rerank API 对结果进行重排序
+  - 使用[Cohere Rerank API](https://dashboard.cohere.com/api-keys) 对结果进行重排序
   - 按文档相关性得分生成置信度评级（高 / 中 / 低）
 
 
